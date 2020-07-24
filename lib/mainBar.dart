@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:minders/about.dart';
-import 'package:minders/chat.dart';
-import 'package:minders/contactUs.dart';
-import 'package:minders/events.dart';
-import 'package:minders/home.dart';
+import 'package:Minders/screens/about.dart';
+import 'package:Minders/screens/chat.dart';
+import 'package:Minders/screens/contactUs.dart';
+import 'package:Minders/screens/events.dart';
+import 'package:Minders/screens/home.dart';
 
 class mainBar extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class mainBar extends StatefulWidget {
 
 class _HomeState extends State<mainBar> {
 
-  int _currentIndex = 2;
+  int _currentIndex = 2; //this is = 2 to make the third item in the navigation bar default
 
   final tabs = [
     events(),

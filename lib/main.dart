@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minders/mainBar.dart';
+import 'package:Minders/mainBar.dart';
 
 void main() => runApp(MaterialApp(
   home: mainBar(),

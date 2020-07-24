@@ -6,6 +6,11 @@ class events extends StatefulWidget {
 }
 
 class _eventsState extends State<events> {
+
+  Future fetchNotes() async {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

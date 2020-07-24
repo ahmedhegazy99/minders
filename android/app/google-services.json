@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "648340666025",
+    "firebase_url": "https://minders-app.firebaseio.com",
+    "project_id": "minders-app",
+    "storage_bucket": "minders-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648340666025:android:c2763413b4287fb9e31bb8",
+        "android_client_info": {
+          "package_name": "org.mindersfci.minders"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648340666025-ttof3ih91nsgbkqac81f06uc0ans2051.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGAEY5pS8IRzwAHUvWs9AyPdK3W9ij_5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648340666025-ttof3ih91nsgbkqac81f06uc0ans2051.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
