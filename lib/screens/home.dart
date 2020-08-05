@@ -1,3 +1,4 @@
+import 'package:Minders/components/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:Minders/models/postModel.dart';
 import 'package:Minders/screens/postCard.dart';
@@ -37,6 +38,16 @@ class _homeState extends State<home> {
           },
         ),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Create Post",
+        child: Icon(Icons.add, color: Colors.black,),
+        backgroundColor: mindersMainY,
+        onPressed: (){
+
+        },
+      ),
+
     );
   }
 }

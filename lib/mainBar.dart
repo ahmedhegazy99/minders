@@ -1,5 +1,6 @@
+import 'package:Minders/components/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:Minders/screens/about.dart';
+import 'package:Minders/screens/about/about.dart';
 import 'package:Minders/screens/chat.dart';
 import 'package:Minders/screens/contactUs.dart';
 import 'package:Minders/screens/events.dart';
@@ -12,13 +13,13 @@ class mainBar extends StatefulWidget {
 
 class _HomeState extends State<mainBar> {
 
-  int _currentIndex = 2; //this is = 2 to make the third item in the navigation bar default
+  int _currentIndex = 1; //this is = 2 to make the third item in the navigation bar default
 
   final tabs = [
-    events(),
+    //events(),
     about(),
     home(),
-    chat(),
+    //chat(),
     contactUs(),
   ];
 
@@ -27,6 +28,7 @@ class _HomeState extends State<mainBar> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: Center(child: Image.asset(
           'assets/images/Hlogo.png',
@@ -51,13 +53,13 @@ class _HomeState extends State<mainBar> {
         //iconSize: 30,
         //unselectedFontSize: 20,
         unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.yellow,
+        selectedItemColor: mindersMainY,
         items: [
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
               icon: Icon(Icons.event),
               title: Text('Events'),
               backgroundColor: Colors.black
-          ),
+          ),*/
           BottomNavigationBarItem(
               icon: Icon(Icons.info),
               title: Text('About'),
@@ -68,11 +70,11 @@ class _HomeState extends State<mainBar> {
               title: Text('Home'),
               backgroundColor: Colors.black
           ),
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
               icon: Icon(Icons.chat_bubble),
               title: Text('Chat'),
               backgroundColor: Colors.black
-          ),
+          ),*/
           BottomNavigationBarItem(
               icon: Icon(Icons.call),
               title: Text('Contact Us'),
