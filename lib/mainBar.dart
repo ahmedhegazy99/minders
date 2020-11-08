@@ -1,4 +1,5 @@
 import 'package:Minders/components/constants.dart';
+import 'package:Minders/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Minders/screens/about/about.dart';
 import 'package:Minders/screens/chat.dart';
@@ -20,6 +21,7 @@ class _HomeState extends State<mainBar> {
     about(),
     home(),
     //chat(),
+    Profile(),
     contactUs(),
   ];
 
@@ -70,11 +72,11 @@ class _HomeState extends State<mainBar> {
               title: Text('Home'),
               backgroundColor: Colors.black
           ),
-          /*BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble),
-              title: Text('Chat'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              title: Text('Profile'),
               backgroundColor: Colors.black
-          ),*/
+          ),
           BottomNavigationBarItem(
               icon: Icon(Icons.call),
               title: Text('Contact Us'),

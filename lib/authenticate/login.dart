@@ -2,6 +2,7 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
+import 'package:Minders/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -11,10 +12,15 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
+  final AuthService _auth = AuthService();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  String _email;
-  String _password;
+  String error = 'please supply a valid email';
+
+  String email = "";
+  String password = "";
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +64,7 @@ class _LoginState extends State<Login> {
                   icon: Icons.person,
                   hintText: "Email",
                   onChanged: (value) {
-                    _email = value;
+                    email = value;
                   },
                 ),
 
@@ -70,8 +76,18 @@ class _LoginState extends State<Login> {
                   icon: Icons.lock,
                   hintText: "Password",
                   onChanged: (value) {
-                    _password = value;
+                    password = value;
                   },
+                ),
+
+                Center(
+                  child: GestureDetector(
+                    onTap: (){Navigator.pushNamed(context, '/signup');},
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Text("you don't have an account? Sign Up.", style: TextStyle(color: mindersMainY, fontSize: 12),),
+                    ),
+                  ),
                 ),
 
                 RoundedButton(
@@ -103,8 +119,27 @@ class _LoginState extends State<Login> {
                           print("Eror");
                         }
                       }
-
 */
+
+                      //to sign in with email and password
+                      if(_formKey.currentState.validate()) {
+                        print(email);
+                        print(password);
+
+                        dynamic result = await _auth.emailSignin(email, password);
+                        if(result == null){
+                          setState(() {
+                            error = 'could not signin with those credentials';
+                          });
+                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                            content: Text(error, style: TextStyle(color: mindersMainY, fontWeight: FontWeight.bold),),
+                            backgroundColor: Colors.red,
+                          ));
+                        } else
+                          Navigator.pushNamed(context, '/mainBar');
+                      }
+
+
                     }
                 ),
               ],

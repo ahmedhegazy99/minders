@@ -2,6 +2,8 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
+import 'package:Minders/services/auth.dart';
+import 'package:Minders/services/database.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -11,10 +13,21 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
 
+  final AuthService _auth = AuthService();
+  final TextEditingController _pass = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final _formKey = GlobalKey<FormState>();
 
-  String _email;
-  String _password;
+  String error = '';
+
+  //text field state
+  String firstName = "";
+  String lastName = "";
+  String email = "";
+  String mobile = "";
+  String password = "";
+  String confirmPass = "";
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +71,7 @@ class _SignupState extends State<Signup> {
                   keyboardType: TextInputType.name,
                   hintText: "First Name",
                   onChanged: (value) {
-                    _email = value;
+                    firstName = value;
                   },
                 ),
 
@@ -69,7 +82,7 @@ class _SignupState extends State<Signup> {
                   keyboardType: TextInputType.name,
                   hintText: "Second Name",
                   onChanged: (value) {
-                    _email = value;
+                    lastName = value;
                   },
                 ),
 
@@ -81,7 +94,7 @@ class _SignupState extends State<Signup> {
                   hintText: "Email",
                   icon: Icons.mail,
                   onChanged: (value) {
-                    _email = value;
+                    email = value;
                   },
                 ),
 
@@ -93,7 +106,7 @@ class _SignupState extends State<Signup> {
                   hintText: "Mobile Number",
                   icon: Icons.phone,
                   onChanged: (value) {
-                    _email = value;
+                    mobile = value;
                   },
                 ),
 
@@ -107,7 +120,7 @@ class _SignupState extends State<Signup> {
                   icon: Icons.lock,
                   hintText: "Password",
                   onChanged: (value) {
-                    _password = value;
+                    password = value;
                   },
                 ),
 
@@ -121,7 +134,7 @@ class _SignupState extends State<Signup> {
                   icon: Icons.lock,
                   hintText: "Confirm Password",
                   onChanged: (value) {
-                    _password = value;
+                    confirmPass = value;
                   },
                 ),
 
@@ -130,8 +143,7 @@ class _SignupState extends State<Signup> {
                 RoundedButton(
                     text: "sign up",
                     press: () async {
-
-                      Navigator.pushNamed(context, '/mainBar');
+                      //Navigator.pushNamed(context, '/mainBar');
                       /*
                       Auth myauth = new Auth();
 
@@ -156,8 +168,32 @@ class _SignupState extends State<Signup> {
                           print("Eror");
                         }
                       }
-
 */
+                      if (_formKey.currentState.validate()) {
+                        print(firstName);
+                        print(lastName);
+                        print(email);
+                        print(mobile);
+                        print(password);
+                        print(confirmPass);
+
+                        dynamic result = await _auth.emailSignup(firstName, lastName, email, mobile, password);
+
+                        if (result == null) {
+                          setState(() {
+                            error = 'please supply a valid email';
+                          });
+                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                            content: Text(error, style: TextStyle(
+                                color: mindersMainY,
+                                fontWeight: FontWeight.bold),),
+                            backgroundColor: Colors.red,
+                          ));
+                        }
+                        else {
+                          Navigator.pushNamed(context, '/mainBar');
+                        }
+                      }
                     }
                 ),
               ],

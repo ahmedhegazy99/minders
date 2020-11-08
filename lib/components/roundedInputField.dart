@@ -50,7 +50,7 @@ class RoundedInputField extends StatelessWidget {
           border: InputBorder.none,
         ),
         style: TextStyle(color: textColor,),
-        obscureText: true,
+        //obscureText: true,
       ),
 
     );

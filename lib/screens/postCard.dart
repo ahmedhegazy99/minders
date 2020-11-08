@@ -78,7 +78,7 @@ class _PostCardState extends State<PostCard> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
-              child: Text(widget.posts.posText),
+              child: Text(widget.posts.postText),
             ),
 
             //post image
