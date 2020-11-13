@@ -1,6 +1,6 @@
 import 'package:Minders/controllers/authController.dart';
 import 'package:Minders/controllers/userController.dart';
-import 'package:Minders/models/user.dart';
+import 'package:Minders/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +20,7 @@ class Database {
       await _firestore
           .collection('users')
           .document(user.id)
-          .setData(user.toMap());
+          .setData(user.toJson());
       return true;
     } catch (e) {
       print(e);
@@ -32,7 +32,7 @@ class Database {
     try {
       DocumentSnapshot doc =
           await _firestore.collection('users').document(uid).get();
-      return UserModel.fromDoc(doc);
+      return UserModel.fromJson(doc.data);
     } catch (e) {
       Get.find<AuthController>().signOut();
       return Get.find<UserController>().user;

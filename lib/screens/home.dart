@@ -12,61 +12,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<String> replies = ["https://picsum.photos/200/300"];
 
-  List<Post> timeline = [
-    Post(
-        accountPic: "https://picsum.photos/200/300",
-        accountName: "Minders",
-        accountUsername: "@minders_fci",
-        date: "23 Jul",
-        postText:
-            "This is a test text for our application helping in performing better view for developing it. This is a test text for our application helping in performing better view for developing it. This is a test text for our application helping in performing better view for developing it.",
-        likes: "10",
-        postPic: "assets/images/screenshot.png"),
-    Post(
-      accountPic: "https://picsum.photos/200/400",
-      accountName: "Minders",
-      accountUsername: "@minders_fci",
-      date: "23 Jul",
-      postText:
-          "This is a test text for our application helping in performing better view for developing it.",
-      likes: "10", /*postPic: "assets/images/screenshot.png"*/
-    ),
-    Post(
-        accountPic: "https://picsum.photos/200/300",
-        accountName: "Minders",
-        accountUsername: "@minders_fci",
-        date: "23 Jul",
-        postText:
+  List<PostModel> timeline = [
+    PostModel(
+        userImage: "https://picsum.photos/200/200",
+        userName: "Minders",
+        date: DateTime.now(),
+        text:
             "This is a test text for our application helping in performing better view for developing it.",
-        likes: "10",
-        postPic: "assets/images/screenshot.png"),
-    Post(
-        accountPic: "https://picsum.photos/200/500",
-        accountName: "Minders",
-        accountUsername: "@minders_fci",
-        date: "23 Jul",
-        postText:
-            "This is a test text for our application helping in performing better view for developing it.",
-        likes: "10",
-        postPic: "assets/images/screenshot.png"),
-    Post(
-        accountPic: "https://picsum.photos/200/300",
-        accountName: "Minders",
-        accountUsername: "@minders_fci",
-        date: "23 Jul",
-        postText:
-            "This is a test text for our application helping in performing better view for developing it.",
-        likes: "10",
-        postPic: "assets/images/screenshot.png"),
-    Post(
-        accountPic: "https://picsum.photos/200/200",
-        accountName: "Minders",
-        accountUsername: "@minders_fci",
-        date: "23 Jul",
-        postText:
-            "This is a test text for our application helping in performing better view for developing it.",
-        likes: "10",
-        postPic: "assets/images/screenshot.png"),
+        upvotes: ['dklf', 'dskljf'],
+        contentUrl: "assets/images/screenshot.png"),
   ];
 
   DocumentSnapshot document;

@@ -1,4 +1,4 @@
-import 'package:Minders/models/user.dart';
+import 'package:Minders/models/userModel.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {

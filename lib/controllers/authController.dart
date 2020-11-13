@@ -1,5 +1,6 @@
+import 'package:Minders/controllers/loadingController.dart';
 import 'package:Minders/controllers/userController.dart';
-import 'package:Minders/models/user.dart';
+import 'package:Minders/models/userModel.dart';
 import 'package:Minders/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,20 @@ class AuthController extends GetxController {
         Get.find<UserController>().user = await db.getUser(_.uid);
       }
     });
+    ever(loading, (val) {
+      print(val);
+      if (val)
+        Get.defaultDialog(
+            title: 'loading'.tr, content: CircularProgressIndicator());
+      else
+        Get.back();
+    });
   }
 
   void createUser(String firstName, String lastName, String email,
       String mobile, String password) async {
     try {
-      loading.value = true;
+      loading.toggle();
       AuthResult _authResult = await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password);
       UserModel _user = UserModel(
@@ -35,7 +44,6 @@ class AuthController extends GetxController {
           mobile: mobile,
           email: email);
       await db.createNewUser(_user);
-
       loading.toggle();
       Get.back();
     } catch (e) {
@@ -46,7 +54,7 @@ class AuthController extends GetxController {
 
   void login(String email, String password) async {
     try {
-      loading.value = true;
+      loading.toggle();
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       loading.toggle();
     } catch (e) {
@@ -57,7 +65,7 @@ class AuthController extends GetxController {
 
   void signOut() async {
     try {
-      loading.value = true;
+      loading.toggle();
       await _auth.signOut();
       Get.find<UserController>().clear();
       loading.toggle();
