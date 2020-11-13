@@ -1,63 +1,85 @@
+import 'package:Minders/controllers/authController.dart';
+import 'package:Minders/controllers/userController.dart';
+import 'package:Minders/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
-class DatabaseService {
-  final String uid;
-  final String postId;
-  DatabaseService({this.uid, this.postId});
+class Database {
+  final Firestore _firestore = Firestore.instance;
 
-  //collection reference
-  final CollectionReference users = Firestore.instance.collection('users');
-
-  Future<void> addUser(String firstName, String lastName, String mail,
-      String mobile, String password) {
-    // Call the user's CollectionReference to add a new user
-    return users
-        .add({
-          'firstName': "add" + firstName,
-          'lastName': lastName,
-          'mail': mail,
-          'mobile': mobile,
-          'password': password,
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+  Future<bool> createNewUser(UserModel user) async {
+    try {
+      await _firestore
+          .collection('users')
+          .document(user.id)
+          .setData(user.toMap());
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future updateUserData(String firstName, String lastName, String mail,
-      String mobile, String password) async {
-    return await users
-        .document(uid)
-        .setData({
-          'firstName': firstName,
-          'lastName': lastName,
-          'mail': mail,
-          'mobile': mobile,
-          'password': password,
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+  Future<UserModel> getUser(String uid) async {
+    try {
+      DocumentSnapshot doc =
+          await _firestore.collection('users').document(uid).get();
+      return UserModel.fromDoc(doc);
+    } catch (e) {
+      Get.find<AuthController>().signOut();
+      return Get.find<UserController>().user;
+    }
   }
 
-  final CollectionReference postsCollection =
-      Firestore.instance.collection('posts');
+  // Future<void> addTodo(String content, String uid) async {
+  //   try {
+  //     await _firestore
+  //         .collection('users')
+  //         .document(uid)
+  //         .collection('todos')
+  //         .add({
+  //       'dateCreated': Timestamp.now(),
+  //       'content': content,
+  //       'done': false
+  //     });
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
 
-  Future uploadPosts(
-      {String ownerId,
-      /*String postId, String date,*/ String postText,
-      String postPic,
-      int likes,
-      String replies}) async {
-    return await postsCollection
-        .add({
-          'ownerId': ownerId,
-          //'postId': postId,
-          'date': Timestamp.now(),
-          'posText': postText,
-          'postPic': postPic,
-          'likes': likes,
-          'replies': replies,
-        })
-        .then((value) => print("Post Added"))
-        .catchError((error) => print("Failed to add post: $error"));
-  }
+  // Stream<List<TodoModel>> getTodos(String uid) {
+  //   return _firestore
+  //       .collection('users')
+  //       .document(uid)
+  //       .collection('todos')
+  //       .orderBy('dateCreated', descending: true)
+  //       .snapshots()
+  //       .map((snapshot) =>
+  //           snapshot.documents.map((doc) => TodoModel.fromDoc(doc)).toList());
+  // }
+
+  // Future<void> changeTodoVal(bool newVal, String todoId, String uid) async {
+  //   try {
+  //     await _firestore
+  //         .collection('users')
+  //         .document(uid)
+  //         .collection('todos')
+  //         .document(todoId)
+  //         .updateData({'done': newVal});
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
+
+  // Future<void> deleteTodo(String todoId, String uid) async {
+  //   try {
+  //     await _firestore
+  //         .collection('users')
+  //         .document(uid)
+  //         .collection('todos')
+  //         .document(todoId)
+  //         .delete();
+  //   } catch (e) {
+  //     return;
+  //   }
+  // }
 }

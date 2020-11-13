@@ -2,9 +2,9 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
-import 'package:Minders/services/auth.dart';
-import 'package:Minders/services/database.dart';
+import 'package:Minders/controllers/authController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -12,8 +12,6 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-
-  final AuthService _auth = AuthService();
   final TextEditingController _pass = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -21,7 +19,6 @@ class _SignupState extends State<Signup> {
 
   String error = '';
 
-  //text field state
   String firstName = "";
   String lastName = "";
   String email = "";
@@ -37,12 +34,13 @@ class _SignupState extends State<Signup> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        title: Center(child: Image.asset(
-          'assets/images/Hlogo.png',
-          fit: BoxFit.contain,
-          height: 100,
-          width: 100,
-        ),
+        title: Center(
+          child: Image.asset(
+            'assets/images/Hlogo.png',
+            fit: BoxFit.contain,
+            height: 100,
+            width: 100,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
@@ -61,7 +59,11 @@ class _SignupState extends State<Signup> {
               children: <Widget>[
                 Text(
                   "sign up",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "englishBebas", color: mindersMainY, fontSize: 60),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "englishBebas",
+                      color: mindersMainY,
+                      fontSize: 60),
                 ),
 
                 SizedBox(height: size.height * 0.01),
@@ -101,7 +103,8 @@ class _SignupState extends State<Signup> {
                 //SizedBox(height: size.height * 0.03),
 
                 RoundedInputField(
-                  validator: (val) => val.isEmpty ? 'Enter mobile number' : null,
+                  validator: (val) =>
+                      val.isEmpty ? 'Enter mobile number' : null,
                   keyboardType: TextInputType.phone,
                   hintText: "Mobile Number",
                   icon: Icons.phone,
@@ -127,7 +130,8 @@ class _SignupState extends State<Signup> {
                 //SizedBox(height: size.height * 0.03),
 
                 RoundedInputField(
-                  validator: (val) => val.isEmpty ? "Password didn't match" : null,
+                  validator: (val) =>
+                      val.isEmpty ? "Password didn't match" : null,
                   color: Colors.white,
                   textColor: Colors.black,
                   obscureText: true,
@@ -143,59 +147,12 @@ class _SignupState extends State<Signup> {
                 RoundedButton(
                     text: "sign up",
                     press: () async {
-                      //Navigator.pushNamed(context, '/mainBar');
-                      /*
-                      Auth myauth = new Auth();
-
-                      if (_password == adminPassword) {
-                        try {
-                          await myauth.signIn(_email, _password);
-                          Navigator.pushNamed(context, StoreHome.id);
-                        }
-                        catch(e){
-                          print(e);
-                        }
-
+                      if (_formKey.currentState.validate() &&
+                          password == confirmPass) {
+                        Get.find<AuthController>().createUser(
+                            firstName, lastName, email, mobile, password);
                       }
-                      else {
-                        final authResult = await myauth.signIn(_email, _password);
-                        print(authResult);
-
-                        if (authResult.user.uid != null) {
-                          print("success");
-                          Navigator.pushReplacementNamed(context, HomePage.id);
-                        } else {
-                          print("Eror");
-                        }
-                      }
-*/
-                      if (_formKey.currentState.validate()) {
-                        print(firstName);
-                        print(lastName);
-                        print(email);
-                        print(mobile);
-                        print(password);
-                        print(confirmPass);
-
-                        dynamic result = await _auth.emailSignup(firstName, lastName, email, mobile, password);
-
-                        if (result == null) {
-                          setState(() {
-                            error = 'please supply a valid email';
-                          });
-                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                            content: Text(error, style: TextStyle(
-                                color: mindersMainY,
-                                fontWeight: FontWeight.bold),),
-                            backgroundColor: Colors.red,
-                          ));
-                        }
-                        else {
-                          Navigator.pushNamed(context, '/mainBar');
-                        }
-                      }
-                    }
-                ),
+                    }),
               ],
             ),
           ),

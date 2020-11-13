@@ -1,6 +1,7 @@
 import 'package:Minders/components/roundedButton.dart';
-import 'package:Minders/services/auth.dart';
+import 'package:Minders/controllers/authController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -8,9 +9,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
-  final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,19 +20,16 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
-
                 children: [
-
                   SizedBox(height: size.height * 0.03),
-
                   RoundedButton(
                     text: "Log Out",
                     //icon: Icon(Icons.mail, color: mindersMainY, size: size.width * 0.1,),
                     color: Colors.red,
                     textColor: Colors.white,
-                    press : () async {
+                    press: () async {
                       print("logout clicked");
-                      await _auth.signOut();
+                      Get.find<AuthController>().signOut();
                       print("signed out");
                     },
                   ),

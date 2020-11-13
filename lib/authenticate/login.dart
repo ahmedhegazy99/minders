@@ -2,8 +2,9 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
-import 'package:Minders/services/auth.dart';
+import 'package:Minders/controllers/authController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -11,7 +12,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final AuthService _auth = AuthService();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
@@ -125,26 +125,7 @@ class _LoginState extends State<Login> {
 
                       //to sign in with email and password
                       if (_formKey.currentState.validate()) {
-                        print(email);
-                        print(password);
-
-                        dynamic result =
-                            await _auth.emailSignin(email, password);
-                        if (result == null) {
-                          setState(() {
-                            error = 'could not signin with those credentials';
-                          });
-                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                            content: Text(
-                              error,
-                              style: TextStyle(
-                                  color: mindersMainY,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            backgroundColor: Colors.red,
-                          ));
-                        } else
-                          Navigator.pushNamed(context, '/mainBar');
+                        Get.find<AuthController>().login(email, password);
                       }
                     }),
               ],

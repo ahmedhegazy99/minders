@@ -1,28 +1,26 @@
 import 'package:Minders/components/constants.dart';
+import 'package:Minders/screens/home.dart';
 import 'package:Minders/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Minders/screens/about/about.dart';
-import 'package:Minders/screens/chat.dart';
 import 'package:Minders/screens/contactUs.dart';
-import 'package:Minders/screens/events.dart';
-import 'package:Minders/screens/home.dart';
 
-class mainBar extends StatefulWidget {
+class MainBar extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _MainBarState createState() => _MainBarState();
 }
 
-class _HomeState extends State<mainBar> {
-
-  int _currentIndex = 1; //this is = 2 to make the third item in the navigation bar default
+class _MainBarState extends State<MainBar> {
+  int _currentIndex =
+      1; //this is = 2 to make the third item in the navigation bar default
 
   final tabs = [
     //events(),
-    about(),
-    home(),
+    About(),
+    Home(),
     //chat(),
     Profile(),
-    contactUs(),
+    ContactUs(),
   ];
 
   @override
@@ -32,12 +30,13 @@ class _HomeState extends State<mainBar> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        title: Center(child: Image.asset(
-          'assets/images/Hlogo.png',
-          fit: BoxFit.contain,
-          height: 100,
-          width: 100,
-        ),
+        title: Center(
+          child: Image.asset(
+            'assets/images/Hlogo.png',
+            fit: BoxFit.contain,
+            height: 100,
+            width: 100,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
@@ -65,25 +64,21 @@ class _HomeState extends State<mainBar> {
           BottomNavigationBarItem(
               icon: Icon(Icons.info),
               title: Text('About'),
-              backgroundColor: Colors.black
-          ),
+              backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               title: Text('Home'),
-              backgroundColor: Colors.black
-          ),
+              backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
               title: Text('Profile'),
-              backgroundColor: Colors.black
-          ),
+              backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.call),
               title: Text('Contact Us'),
-              backgroundColor: Colors.black
-          ),
+              backgroundColor: Colors.black),
         ],
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             _currentIndex = index;
           });

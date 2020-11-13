@@ -2,24 +2,15 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
-import 'package:Minders/models/user.dart';
-import 'package:Minders/services/auth.dart';
-import 'package:Minders/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UploadPost extends StatefulWidget {
-  final User currentUser;
-
-  UploadPost({this.currentUser});
-
   @override
   _UploadPostState createState() => _UploadPostState();
 }
 
 class _UploadPostState extends State<UploadPost>
     with AutomaticKeepAliveClientMixin<UploadPost> {
-  final AuthService _auth = AuthService();
   final TextEditingController _pass = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -89,11 +80,11 @@ class _UploadPostState extends State<UploadPost>
                     press: () async {
                       //Navigator.pushNamed(context, '/mainBar');
 
-                      final userID = await _auth.getUserId();
+                      // final userID = await _auth.getUserId();
 
-                      //create a new document for new user with uid
-                      await DatabaseService().uploadPosts(
-                          ownerId: userID, postText: description, likes: 0);
+                      // //create a new document for new user with uid
+                      // await DatabaseService().uploadPosts(
+                      //     ownerId: userID, postText: description, likes: 0);
 
                       showDialog(
                           context: context,

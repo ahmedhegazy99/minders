@@ -4,29 +4,72 @@ import 'package:flutter/material.dart';
 import 'package:Minders/models/postModel.dart';
 import 'package:Minders/screens/postCard.dart';
 
-class home extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _homeState createState() => _homeState();
+  _HomeState createState() => _HomeState();
 }
 
-class _homeState extends State<home> {
-
-  List<String> replies = [
-    "https://picsum.photos/200/300"
-  ];
+class _HomeState extends State<Home> {
+  List<String> replies = ["https://picsum.photos/200/300"];
 
   List<Post> timeline = [
-    Post(accountPic: "https://picsum.photos/200/300" ,accountName: "Minders", accountUsername: "@minders_fci", date: "23 Jul", postText: "This is a test text for our application helping in performing better view for developing it. This is a test text for our application helping in performing better view for developing it. This is a test text for our application helping in performing better view for developing it.", likes: "10", postPic: "assets/images/screenshot.png"),
-    Post(accountPic: "https://picsum.photos/200/400" ,accountName: "Minders", accountUsername: "@minders_fci", date: "23 Jul", postText: "This is a test text for our application helping in performing better view for developing it.", likes: "10", /*postPic: "assets/images/screenshot.png"*/),
-    Post(accountPic: "https://picsum.photos/200/300" ,accountName: "Minders", accountUsername: "@minders_fci", date: "23 Jul", postText: "This is a test text for our application helping in performing better view for developing it.", likes: "10", postPic: "assets/images/screenshot.png"),
-    Post(accountPic: "https://picsum.photos/200/500" ,accountName: "Minders", accountUsername: "@minders_fci", date: "23 Jul", postText: "This is a test text for our application helping in performing better view for developing it.", likes: "10", postPic: "assets/images/screenshot.png"),
-    Post(accountPic: "https://picsum.photos/200/300" ,accountName: "Minders", accountUsername: "@minders_fci", date: "23 Jul", postText: "This is a test text for our application helping in performing better view for developing it.", likes: "10", postPic: "assets/images/screenshot.png"),
-    Post(accountPic: "https://picsum.photos/200/200" ,accountName: "Minders", accountUsername: "@minders_fci", date: "23 Jul", postText: "This is a test text for our application helping in performing better view for developing it.", likes: "10", postPic: "assets/images/screenshot.png"),
-
+    Post(
+        accountPic: "https://picsum.photos/200/300",
+        accountName: "Minders",
+        accountUsername: "@minders_fci",
+        date: "23 Jul",
+        postText:
+            "This is a test text for our application helping in performing better view for developing it. This is a test text for our application helping in performing better view for developing it. This is a test text for our application helping in performing better view for developing it.",
+        likes: "10",
+        postPic: "assets/images/screenshot.png"),
+    Post(
+      accountPic: "https://picsum.photos/200/400",
+      accountName: "Minders",
+      accountUsername: "@minders_fci",
+      date: "23 Jul",
+      postText:
+          "This is a test text for our application helping in performing better view for developing it.",
+      likes: "10", /*postPic: "assets/images/screenshot.png"*/
+    ),
+    Post(
+        accountPic: "https://picsum.photos/200/300",
+        accountName: "Minders",
+        accountUsername: "@minders_fci",
+        date: "23 Jul",
+        postText:
+            "This is a test text for our application helping in performing better view for developing it.",
+        likes: "10",
+        postPic: "assets/images/screenshot.png"),
+    Post(
+        accountPic: "https://picsum.photos/200/500",
+        accountName: "Minders",
+        accountUsername: "@minders_fci",
+        date: "23 Jul",
+        postText:
+            "This is a test text for our application helping in performing better view for developing it.",
+        likes: "10",
+        postPic: "assets/images/screenshot.png"),
+    Post(
+        accountPic: "https://picsum.photos/200/300",
+        accountName: "Minders",
+        accountUsername: "@minders_fci",
+        date: "23 Jul",
+        postText:
+            "This is a test text for our application helping in performing better view for developing it.",
+        likes: "10",
+        postPic: "assets/images/screenshot.png"),
+    Post(
+        accountPic: "https://picsum.photos/200/200",
+        accountName: "Minders",
+        accountUsername: "@minders_fci",
+        date: "23 Jul",
+        postText:
+            "This is a test text for our application helping in performing better view for developing it.",
+        likes: "10",
+        postPic: "assets/images/screenshot.png"),
   ];
 
   DocumentSnapshot document;
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +77,18 @@ class _homeState extends State<home> {
       body: Container(
         color: Colors.grey[200],
         child: StreamBuilder(
-          stream: Firestore.instance.collection('posts').snapshots(),
-          builder: (context, snapshot){
-            if(!snapshot.hasData) return const Text('Loading...');
-            return ListView.builder(
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (context, index){
-                  return Container(child: PostCard(posts: timeline[index]),);
+            stream: Firestore.instance.collection('posts').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const Text('Loading...');
+              return ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: PostCard(posts: timeline[index]),
+                  );
                 },
-            );
-          }
-        ),
-
-
+              );
+            }),
 
         /*ListView.builder(
           itemCount: timeline.length,
@@ -57,18 +99,17 @@ class _homeState extends State<home> {
           },
         ),*/
       ),
-
       floatingActionButton: FloatingActionButton(
         tooltip: "Create Post",
-        child: Icon(Icons.add, color: Colors.black,),
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
         backgroundColor: mindersMainY,
-        onPressed: (){
-
+        onPressed: () {
           Navigator.pushNamed(context, '/uploadPage');
-
         },
       ),
-
     );
   }
 }
