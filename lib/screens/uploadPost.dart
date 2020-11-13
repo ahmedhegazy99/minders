@@ -2,26 +2,20 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
+import 'package:Minders/controllers/databaseController.dart';
+import 'package:Minders/controllers/userController.dart';
+import 'package:Minders/models/postModel.dart';
+import 'package:Minders/models/userModel.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class UploadPost extends StatefulWidget {
-  @override
-  _UploadPostState createState() => _UploadPostState();
-}
-
-class _UploadPostState extends State<UploadPost>
-    with AutomaticKeepAliveClientMixin<UploadPost> {
+class UploadPost extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-
-  String error = '';
-
-  //text field state
   final TextEditingController description = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    super.build(context);
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -71,42 +65,18 @@ class _UploadPostState extends State<UploadPost>
                 //SizedBox(height: size.height * 0.03),
 
                 RoundedButton(
-                    text: "sign up",
+                    text: "addPost".tr,
                     press: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SimpleDialog(
-                              title: new Text(
-                                "Enter your pin to proceed",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              backgroundColor: Colors.black,
-                              contentPadding: EdgeInsets.all(20),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
-                              children: [
-                                //cancel button
-                                SimpleDialogOption(
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-
-                      Navigator.of(context).pop();
+                      UserModel user = Get.find<UserController>().user;
+                      Get.find<DatabaseController>().addPost(PostModel(
+                        contentUrl: '',
+                        date: DateTime.now(),
+                        text: description.text,
+                        type: PostTypeEnum.photo,
+                        userId: user.id,
+                        userImage: user.imageUrl,
+                        userName: '${user.firstName} ${user.lastName}',
+                      ));
                     }),
               ],
             ),

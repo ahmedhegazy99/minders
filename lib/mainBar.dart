@@ -63,19 +63,19 @@ class _MainBarState extends State<MainBar> {
           ),*/
           BottomNavigationBarItem(
               icon: Icon(Icons.info),
-              title: Text('About'),
+              label: 'About',
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              title: Text('Home'),
+              label: 'Home',
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text('Profile'),
+              label: 'Profile',
               backgroundColor: Colors.black),
           BottomNavigationBarItem(
               icon: Icon(Icons.call),
-              title: Text('Contact Us'),
+              label: 'Contact Us',
               backgroundColor: Colors.black),
         ],
         onTap: (index) {

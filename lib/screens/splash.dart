@@ -13,9 +13,9 @@ class Splash extends GetWidget<AuthController> {
       imagePath: 'assets/images/Hlogo.png',
       home: Obx(
         () {
-          if (Get.find<AuthController>().user?.uid != null)
+          if (controller.user?.uid != null) {
             return MainBar();
-          else
+          } else
             return Login();
         },
       ),

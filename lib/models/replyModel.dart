@@ -1,4 +1,5 @@
 import 'package:Minders/utils/utilFunctions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'replyModel.g.dart';

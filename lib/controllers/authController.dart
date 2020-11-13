@@ -1,7 +1,7 @@
-import 'package:Minders/controllers/loadingController.dart';
 import 'package:Minders/controllers/userController.dart';
 import 'package:Minders/models/userModel.dart';
-import 'package:Minders/services/database.dart';
+import 'package:Minders/controllers/databaseController.dart';
+import 'package:Minders/utils/utilFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,15 +14,15 @@ class AuthController extends GetxController {
   FirebaseUser get user => _firebaseUser.value;
 
   @override
-  void onInit() {
+  void onReady() {
     _firebaseUser.bindStream(_auth.onAuthStateChanged);
     ever(_firebaseUser, (_) async {
       if (_ != null) {
-        Get.find<UserController>().user = await db.getUser(_.uid);
+        Get.find<UserController>().user =
+            await Get.find<DatabaseController>().getUser(_.uid);
       }
     });
     ever(loading, (val) {
-      print(val);
       if (val)
         Get.defaultDialog(
             title: 'loading'.tr, content: CircularProgressIndicator());
@@ -43,7 +43,7 @@ class AuthController extends GetxController {
           lastName: lastName,
           mobile: mobile,
           email: email);
-      await db.createNewUser(_user);
+      await Get.find<DatabaseController>().createNewUser(_user);
       loading.toggle();
       Get.back();
     } catch (e) {
@@ -73,14 +73,5 @@ class AuthController extends GetxController {
       loading.toggle();
       displayError(e);
     }
-  }
-
-  void displayError(dynamic e) {
-    Get.snackbar(
-      "error".tr,
-      e.message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.red,
-    );
   }
 }

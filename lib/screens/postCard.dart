@@ -1,18 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Minders/models/postModel.dart';
+import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
-class PostCard extends StatefulWidget {
-  final PostModel posts;
-  PostCard({this.posts});
-
-  @override
-  _PostCardState createState() => _PostCardState();
-}
-
-class _PostCardState extends State<PostCard> {
-  int upButton = 0;
-  bool pressed = false;
+class PostCard extends StatelessWidget {
+  final PostModel post;
+  PostCard({this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +21,6 @@ class _PostCardState extends State<PostCard> {
       )),
       child: Column(
         children: [
-          //post info container
           Container(
             padding: EdgeInsets.only(
               top: 5,
@@ -36,24 +29,24 @@ class _PostCardState extends State<PostCard> {
               leading: CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.grey[200],
-                backgroundImage: NetworkImage(widget.posts.userImage),
+                backgroundImage: NetworkImage(post.userImage ??
+                    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'),
               ),
               title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   //account name text
                   Text(
-                    widget.posts.userName,
+                    post.userName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(
-                    width: size.width * 0.25,
-                  ),
+
                   //post date text
                   Text(
-                    widget.posts.text,
+                    DateFormat.yMEd().format(post.date),
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
@@ -61,66 +54,44 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ],
               ),
-              //account username text
-              subtitle: Text(widget.posts.userName),
+              //     //account username text
+              subtitle: Text('@${post.userName}'),
 
-              //options button (the arrow on the right)
+              //     //options button (the arrow on the right)
               trailing: GestureDetector(
                 child: Icon(Icons.keyboard_arrow_down),
                 onTap: () {},
               ),
             ),
           ),
-
-          //post text
+          // //post text
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
-            child: Text(widget.posts.text),
+            child: Text(post.text),
           ),
 
-          //post image
-          Container(
-            //this function returns an image asset child to the container if
-            // there is image if no image provided it returns null without errors
-            child: (() {
-              if (widget.posts.contentUrl != null)
-                return Image.asset(widget.posts.contentUrl);
-              else
-                return null;
-            }()),
-            //Placeholder(fallbackWidth: size.width, fallbackHeight: size.height * 0.3,),
-          ),
+          // post image
+          if (post.type == PostTypeEnum.photo && post.contentUrl != null)
+            Container(
+              child: Image.network(post.contentUrl),
+            ),
 
-          //actions part up button and comment button
           Container(
             padding: EdgeInsets.symmetric(horizontal: 0),
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // up button
                 FlatButton.icon(
                   icon: Icon(Icons.arrow_upward),
-                  label: Text(upButton.toString()),
-                  textColor: pressed ? Colors.yellow : Colors.black38,
-                  onPressed: () {
-                    setState(() {
-                      if (!pressed) {
-                        upButton++;
-                        pressed = true;
-                      } else {
-                        upButton--;
-                        pressed = false;
-                      }
-                    });
-                  },
+                  label: Text('upvote'.tr),
+                  textColor: Colors.black38,
+                  onPressed: () {},
                 ),
-
-                //comment button
                 FlatButton.icon(
                     icon: Icon(Icons.mode_comment),
-                    label: Text(upButton.toString()),
+                    label: Text('comment'.tr),
                     textColor: Colors.black38,
                     onPressed: () {}),
               ],

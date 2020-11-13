@@ -1,6 +1,6 @@
 import 'package:Minders/authenticate/login.dart';
 import 'package:Minders/authenticate/signup.dart';
-import 'package:Minders/controllers/bindings/authBinding.dart';
+import 'package:Minders/controllers/bindings/bindingController.dart';
 import 'package:Minders/screens/home.dart';
 import 'package:Minders/screens/splash.dart';
 import 'package:Minders/screens/uploadPost.dart';
@@ -17,9 +17,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       translations: Locales(),
       locale: Locale('en'),
-      initialBinding: AuthBinding(),
+      initialBinding: BindingController(),
       home: Splash(),
       routes: {
+        '/splash': (context) => Splash(),
         '/home': (context) => Home(),
         '/login': (context) => Login(),
         '/signup': (context) => Signup(),
