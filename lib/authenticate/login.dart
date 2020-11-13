@@ -11,7 +11,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final AuthService _auth = AuthService();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -21,7 +20,6 @@ class _LoginState extends State<Login> {
   String email = "";
   String password = "";
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,12 +27,13 @@ class _LoginState extends State<Login> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Center(child: Image.asset(
-          'assets/images/Hlogo.png',
-          fit: BoxFit.contain,
-          height: 100,
-          width: 100,
-        ),
+        title: Center(
+          child: Image.asset(
+            'assets/images/Hlogo.png',
+            fit: BoxFit.contain,
+            height: 100,
+            width: 100,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
@@ -53,21 +52,22 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 Text(
                   "LOGIN",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "englishBebas", color: mindersMainY, fontSize: 60),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "englishBebas",
+                      color: mindersMainY,
+                      fontSize: 60),
                 ),
-
                 SizedBox(height: size.height * 0.03),
-
                 RoundedInputField(
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                  keyboardType:TextInputType.emailAddress,
+                  keyboardType: TextInputType.emailAddress,
                   icon: Icons.person,
                   hintText: "Email",
                   onChanged: (value) {
                     email = value;
                   },
                 ),
-
                 RoundedInputField(
                   validator: (val) => val.isEmpty ? 'Enter an password' : null,
                   color: Colors.white,
@@ -79,21 +79,23 @@ class _LoginState extends State<Login> {
                     password = value;
                   },
                 ),
-
                 Center(
                   child: GestureDetector(
-                    onTap: (){Navigator.pushNamed(context, '/signup');},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
-                      child: Text("you don't have an account? Sign Up.", style: TextStyle(color: mindersMainY, fontSize: 12),),
+                      child: Text(
+                        "you don't have an account? Sign Up.",
+                        style: TextStyle(color: mindersMainY, fontSize: 12),
+                      ),
                     ),
                   ),
                 ),
-
                 RoundedButton(
                     text: "login",
                     press: () async {
-
                       Navigator.pushNamed(context, '/signup');
                       /*
                       Auth myauth = new Auth();
@@ -122,26 +124,29 @@ class _LoginState extends State<Login> {
 */
 
                       //to sign in with email and password
-                      if(_formKey.currentState.validate()) {
+                      if (_formKey.currentState.validate()) {
                         print(email);
                         print(password);
 
-                        dynamic result = await _auth.emailSignin(email, password);
-                        if(result == null){
+                        dynamic result =
+                            await _auth.emailSignin(email, password);
+                        if (result == null) {
                           setState(() {
                             error = 'could not signin with those credentials';
                           });
                           _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                            content: Text(error, style: TextStyle(color: mindersMainY, fontWeight: FontWeight.bold),),
+                            content: Text(
+                              error,
+                              style: TextStyle(
+                                  color: mindersMainY,
+                                  fontWeight: FontWeight.bold),
+                            ),
                             backgroundColor: Colors.red,
                           ));
                         } else
                           Navigator.pushNamed(context, '/mainBar');
                       }
-
-
-                    }
-                ),
+                    }),
               ],
             ),
           ),

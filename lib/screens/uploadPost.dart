@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UploadPost extends StatefulWidget {
-
   final User currentUser;
 
   UploadPost({this.currentUser});
@@ -20,7 +19,6 @@ class UploadPost extends StatefulWidget {
 
 class _UploadPostState extends State<UploadPost>
     with AutomaticKeepAliveClientMixin<UploadPost> {
-
   final AuthService _auth = AuthService();
   final TextEditingController _pass = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -35,17 +33,19 @@ class _UploadPostState extends State<UploadPost>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        title: Center(child: Image.asset(
-          'assets/images/Hlogo.png',
-          fit: BoxFit.contain,
-          height: 100,
-          width: 100,
-        ),
+        title: Center(
+          child: Image.asset(
+            'assets/images/Hlogo.png',
+            fit: BoxFit.contain,
+            height: 100,
+            width: 100,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
@@ -64,7 +64,11 @@ class _UploadPostState extends State<UploadPost>
               children: <Widget>[
                 Text(
                   "Write Post",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "englishBebas", color: mindersMainY, fontSize: 20),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "englishBebas",
+                      color: mindersMainY,
+                      fontSize: 20),
                 ),
 
                 SizedBox(height: size.height * 0.01),
@@ -85,39 +89,44 @@ class _UploadPostState extends State<UploadPost>
                     press: () async {
                       //Navigator.pushNamed(context, '/mainBar');
 
-                      final userID = _auth.getUserId();
+                      final userID = await _auth.getUserId();
 
                       //create a new document for new user with uid
-                      await DatabaseService().uploadPosts(ownerId: userID, postText: description, likes: 0);
+                      await DatabaseService().uploadPosts(
+                          ownerId: userID, postText: description, likes: 0);
 
-                      showDialog(context: context,
-                      builder: (BuildContext context) {
-                        return SimpleDialog(
-                          title: new Text("Enter your pin to proceed",
-                            style: TextStyle(color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          backgroundColor: Colors.black,
-                          contentPadding: EdgeInsets.all(20),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(20.0))
-                          ),
-                          children: [
-                            //cancel button
-                            SimpleDialogOption(
-                              child: Text("Cancel",
-                                style: TextStyle(color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      }
-                      );
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SimpleDialog(
+                              title: new Text(
+                                "Enter your pin to proceed",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              backgroundColor: Colors.black,
+                              contentPadding: EdgeInsets.all(20),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0))),
+                              children: [
+                                //cancel button
+                                SimpleDialogOption(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
 
                       Navigator.of(context).pop();
 
@@ -141,8 +150,7 @@ class _UploadPostState extends State<UploadPost>
                         else
                           Navigator.pushNamed(context, '/mainBar');
                       }*/
-                    }
-                ),
+                    }),
               ],
             ),
           ),
@@ -152,6 +160,5 @@ class _UploadPostState extends State<UploadPost>
   }
 
   @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => throw UnimplementedError();
+  bool get wantKeepAlive => true;
 }
