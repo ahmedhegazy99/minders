@@ -6,19 +6,11 @@ import 'package:Minders/controllers/authController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  @override
-  _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+class Login extends GetWidget<AuthController> {
   final _formKey = GlobalKey<FormState>();
 
-  String error = 'please supply a valid email';
-
-  String email = "";
-  String password = "";
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +56,7 @@ class _LoginState extends State<Login> {
                   keyboardType: TextInputType.emailAddress,
                   icon: Icons.person,
                   hintText: "Email",
-                  onChanged: (value) {
-                    email = value;
-                  },
+                  controller: emailController,
                 ),
                 RoundedInputField(
                   validator: (val) => val.isEmpty ? 'Enter an password' : null,
@@ -75,9 +65,7 @@ class _LoginState extends State<Login> {
                   obscureText: true,
                   icon: Icons.lock,
                   hintText: "Password",
-                  onChanged: (value) {
-                    password = value;
-                  },
+                  controller: passwordController,
                 ),
                 Center(
                   child: GestureDetector(
@@ -96,36 +84,10 @@ class _LoginState extends State<Login> {
                 RoundedButton(
                     text: "login",
                     press: () async {
-                      Navigator.pushNamed(context, '/signup');
-                      /*
-                      Auth myauth = new Auth();
-
-                      if (_password == adminPassword) {
-                        try {
-                          await myauth.signIn(_email, _password);
-                          Navigator.pushNamed(context, StoreHome.id);
-                        }
-                        catch(e){
-                          print(e);
-                        }
-
-                      }
-                      else {
-                        final authResult = await myauth.signIn(_email, _password);
-                        print(authResult);
-
-                        if (authResult.user.uid != null) {
-                          print("success");
-                          Navigator.pushReplacementNamed(context, HomePage.id);
-                        } else {
-                          print("Eror");
-                        }
-                      }
-*/
-
                       //to sign in with email and password
                       if (_formKey.currentState.validate()) {
-                        Get.find<AuthController>().login(email, password);
+                        controller.login(
+                            emailController.text, passwordController.text);
                       }
                     }),
               ],

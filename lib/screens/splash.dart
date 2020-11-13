@@ -1,5 +1,6 @@
 import 'package:Minders/authenticate/login.dart';
 import 'package:Minders/controllers/authController.dart';
+import 'package:Minders/mainBar.dart';
 import 'package:Minders/screens/home.dart';
 import 'package:animated_splash/animated_splash.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,11 @@ class Splash extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplash(
-      imagePath: 'assets/logo.png',
+      imagePath: 'assets/images/Hlogo.png',
       home: Obx(
         () {
           if (Get.find<AuthController>().user?.uid != null)
-            return Home();
+            return MainBar();
           else
             return Login();
         },

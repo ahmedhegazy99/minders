@@ -25,13 +25,13 @@ class UserModel {
     this.email = doc['email'];
   }
 
-  Map toMap() {
-    return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'mobile': mobile,
-      'imageUrl': imageUrl,
-    };
+  Map<String, dynamic> toMap() {
+    Map map = Map<String, dynamic>();
+    map['firstName'] = this.firstName;
+    map['lastName'] = this.lastName;
+    map['mobile'] = this.mobile;
+    map['imageUrl'] = this.imageUrl;
+    map['email'] = this.email;
+    return map;
   }
 }

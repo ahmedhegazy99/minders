@@ -6,25 +6,15 @@ import 'package:Minders/controllers/authController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Signup extends StatefulWidget {
-  @override
-  _SignupState createState() => _SignupState();
-}
-
-class _SignupState extends State<Signup> {
-  final TextEditingController _pass = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+class Signup extends GetWidget<AuthController> {
   final _formKey = GlobalKey<FormState>();
 
-  String error = '';
-
-  String firstName = "";
-  String lastName = "";
-  String email = "";
-  String mobile = "";
-  String password = "";
-  String confirmPass = "";
+  final TextEditingController firstName = TextEditingController();
+  final TextEditingController lastName = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
+  final TextEditingController mobile = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,52 +55,34 @@ class _SignupState extends State<Signup> {
                       color: mindersMainY,
                       fontSize: 60),
                 ),
-
                 SizedBox(height: size.height * 0.01),
 
                 RoundedInputField(
                   validator: (val) => val.isEmpty ? 'Enter First Name' : null,
                   keyboardType: TextInputType.name,
                   hintText: "First Name",
-                  onChanged: (value) {
-                    firstName = value;
-                  },
+                  controller: firstName,
                 ),
-
-                //SizedBox(height: size.height * 0.03),
-
                 RoundedInputField(
                   validator: (val) => val.isEmpty ? 'Enter Second Name' : null,
                   keyboardType: TextInputType.name,
                   hintText: "Second Name",
-                  onChanged: (value) {
-                    lastName = value;
-                  },
+                  controller: lastName,
                 ),
-
-                //SizedBox(height: size.height * 0.03),
-
                 RoundedInputField(
                   validator: (val) => val.isEmpty ? 'Enter an Email' : null,
                   keyboardType: TextInputType.emailAddress,
                   hintText: "Email",
                   icon: Icons.mail,
-                  onChanged: (value) {
-                    email = value;
-                  },
+                  controller: email,
                 ),
-
-                //SizedBox(height: size.height * 0.03),
-
                 RoundedInputField(
                   validator: (val) =>
                       val.isEmpty ? 'Enter mobile number' : null,
                   keyboardType: TextInputType.phone,
                   hintText: "Mobile Number",
                   icon: Icons.phone,
-                  onChanged: (value) {
-                    mobile = value;
-                  },
+                  controller: mobile,
                 ),
 
                 //SizedBox(height: size.height * 0.03),
@@ -122,9 +94,7 @@ class _SignupState extends State<Signup> {
                   obscureText: true,
                   icon: Icons.lock,
                   hintText: "Password",
-                  onChanged: (value) {
-                    password = value;
-                  },
+                  controller: password,
                 ),
 
                 //SizedBox(height: size.height * 0.03),
@@ -137,9 +107,7 @@ class _SignupState extends State<Signup> {
                   obscureText: true,
                   icon: Icons.lock,
                   hintText: "Confirm Password",
-                  onChanged: (value) {
-                    confirmPass = value;
-                  },
+                  controller: confirmPassword,
                 ),
 
                 //SizedBox(height: size.height * 0.03),
@@ -148,9 +116,9 @@ class _SignupState extends State<Signup> {
                     text: "sign up",
                     press: () async {
                       if (_formKey.currentState.validate() &&
-                          password == confirmPass) {
-                        Get.find<AuthController>().createUser(
-                            firstName, lastName, email, mobile, password);
+                          password.text == confirmPassword.text) {
+                        controller.createUser(firstName.text, lastName.text,
+                            email.text, mobile.text, password.text);
                       }
                     }),
               ],

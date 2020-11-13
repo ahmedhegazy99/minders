@@ -17,7 +17,7 @@ class AuthController extends GetxController {
     _firebaseUser.bindStream(_auth.onAuthStateChanged);
     ever(_firebaseUser, (_) async {
       if (_ != null) {
-        Get.find<UserController>().user = await Database().getUser(_.uid);
+        Get.find<UserController>().user = await db.getUser(_.uid);
       }
     });
   }
@@ -34,7 +34,7 @@ class AuthController extends GetxController {
           lastName: lastName,
           mobile: mobile,
           email: email);
-      await Database().createNewUser(_user);
+      await db.createNewUser(_user);
 
       loading.toggle();
       Get.back();

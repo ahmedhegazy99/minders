@@ -11,15 +11,12 @@ class UploadPost extends StatefulWidget {
 
 class _UploadPostState extends State<UploadPost>
     with AutomaticKeepAliveClientMixin<UploadPost> {
-  final TextEditingController _pass = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   final _formKey = GlobalKey<FormState>();
 
   String error = '';
 
   //text field state
-  String description = "";
+  final TextEditingController description = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +65,7 @@ class _UploadPostState extends State<UploadPost>
                   validator: (val) => val.isEmpty ? 'write post...' : null,
                   keyboardType: TextInputType.name,
                   hintText: "post",
-                  onChanged: (value) {
-                    description = value;
-                  },
+                  controller: description,
                 ),
 
                 //SizedBox(height: size.height * 0.03),
@@ -78,14 +73,6 @@ class _UploadPostState extends State<UploadPost>
                 RoundedButton(
                     text: "sign up",
                     press: () async {
-                      //Navigator.pushNamed(context, '/mainBar');
-
-                      // final userID = await _auth.getUserId();
-
-                      // //create a new document for new user with uid
-                      // await DatabaseService().uploadPosts(
-                      //     ownerId: userID, postText: description, likes: 0);
-
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -120,27 +107,6 @@ class _UploadPostState extends State<UploadPost>
                           });
 
                       Navigator.of(context).pop();
-
-                      /*
-                      if (_formKey.currentState.validate()) {
-                        print(description);
-
-                        dynamic result = await _auth.emailSignup(
-                            email, password);
-                        if (result == null) {
-                          setState(() {
-                            error = 'please supply a valid email';
-                          });
-                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                            content: Text(error, style: TextStyle(
-                                color: mindersMainY,
-                                fontWeight: FontWeight.bold),),
-                            backgroundColor: Colors.red,
-                          ));
-                        }
-                        else
-                          Navigator.pushNamed(context, '/mainBar');
-                      }*/
                     }),
               ],
             ),

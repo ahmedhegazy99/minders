@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: Locales(),
-      locale: Locale('ar'),
+      locale: Locale('en'),
       initialBinding: AuthBinding(),
       home: Splash(),
       routes: {

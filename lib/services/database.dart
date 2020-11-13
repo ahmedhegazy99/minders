@@ -4,6 +4,14 @@ import 'package:Minders/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+Database _db;
+Database get db {
+  if (_db == null) {
+    _db = Database();
+  }
+  return _db;
+}
+
 class Database {
   final Firestore _firestore = Firestore.instance;
 
@@ -15,6 +23,7 @@ class Database {
           .setData(user.toMap());
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }
