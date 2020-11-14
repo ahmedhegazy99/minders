@@ -1,6 +1,8 @@
+import 'package:Minders/controllers/databaseController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Minders/models/postModel.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 
@@ -15,10 +17,10 @@ class PostCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
       shape: RoundedRectangleBorder(
-          //borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0),)
-          borderRadius: BorderRadius.all(
-        Radius.circular(30.0),
-      )),
+        borderRadius: BorderRadius.all(
+          Radius.circular(30.0),
+        ),
+      ),
       child: Column(
         children: [
           Container(
@@ -35,7 +37,6 @@ class PostCard extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  //account name text
                   Text(
                     post.userName,
                     style: TextStyle(
@@ -43,8 +44,6 @@ class PostCard extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-
-                  //post date text
                   Text(
                     DateFormat.yMEd().format(post.date),
                     style: TextStyle(
@@ -54,13 +53,19 @@ class PostCard extends StatelessWidget {
                   ),
                 ],
               ),
-              //     //account username text
               subtitle: Text('@${post.userName}'),
-
-              //     //options button (the arrow on the right)
-              trailing: GestureDetector(
-                child: Icon(Icons.keyboard_arrow_down),
-                onTap: () {},
+              trailing: PopupMenuButton(
+                onSelected: (val) {
+                  if (val == 'delete') {
+                    Get.find<DatabaseController>().deletePost(post.id);
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: Text('delete'.tr),
+                    value: 'delete',
+                  )
+                ],
               ),
             ),
           ),

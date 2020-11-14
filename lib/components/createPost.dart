@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Minders/controllers/createpostController.dart';
 import 'package:Minders/controllers/databaseController.dart';
 import 'package:Minders/controllers/userController.dart';
 import 'package:Minders/models/postModel.dart';
@@ -7,10 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CreatePost extends GetWidget<UserController> {
-  final text = TextEditingController();
-  final image = Rx<File>();
-
+class CreatePost extends StatelessWidget {
+  final controller = Get.put(CreatepostController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +31,9 @@ class CreatePost extends GetWidget<UserController> {
                     child: CircleAvatar(
                       radius: 20.0,
                       backgroundColor: Colors.grey[200],
-                      backgroundImage: NetworkImage(controller.user.imageUrl ??
+                      backgroundImage: NetworkImage(Get.find<UserController>()
+                              .user
+                              .imageUrl ??
                           "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"),
                     ),
                   ),
@@ -41,7 +42,7 @@ class CreatePost extends GetWidget<UserController> {
               const SizedBox(width: 20.0),
               Expanded(
                 child: TextField(
-                  controller: text,
+                  controller: controller.textController.value,
                   decoration: InputDecoration.collapsed(
                     hintText: 'whatIsInYourMind'.tr,
                   ),
@@ -49,6 +50,22 @@ class CreatePost extends GetWidget<UserController> {
               )
             ],
           ),
+          Obx(() {
+            if (controller.image.value != null)
+              return Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(16),
+                    child: Image.file(controller.image.value),
+                  ),
+                  RaisedButton(
+                    onPressed: () => controller.removeImage(),
+                    child: Text('remove'.tr),
+                  )
+                ],
+              );
+            return SizedBox();
+          }),
           const Divider(height: 20.0, thickness: 0.5),
           Container(
             height: 40.0,
@@ -57,10 +74,7 @@ class CreatePost extends GetWidget<UserController> {
               children: [
                 FlatButton.icon(
                   onPressed: () async {
-                    final picker = ImagePicker();
-                    final pickedFile =
-                        await picker.getImage(source: ImageSource.gallery);
-                    image.value = File(pickedFile.path);
+                    await controller.selectImage();
                   },
                   icon: const Icon(
                     Icons.photo_library,
@@ -72,32 +86,7 @@ class CreatePost extends GetWidget<UserController> {
                 const VerticalDivider(width: 8.0),
                 FlatButton.icon(
                   onPressed: () async {
-                    if (text.text.isEmpty)
-                      Get.snackbar('cantPost'.tr, 'empty'.tr,
-                          backgroundColor: Colors.red,
-                          snackPosition: SnackPosition.BOTTOM);
-                    else {
-                      PostModel post = PostModel();
-                      if (image.value != null)
-                        post.type = PostTypeEnum.photo;
-                      else
-                        post.type = PostTypeEnum.text;
-
-                      post.text = text.text;
-                      post.userId = controller.user.id;
-                      post.userImage = controller.user.imageUrl;
-                      post.userName =
-                          '${controller.user.firstName} ${controller.user.lastName}';
-                      post.date = DateTime.now();
-                      post.replies = [];
-                      post.upvotes = [];
-
-                      await Get.find<DatabaseController>()
-                          .addPost(post, image: image.value);
-
-                      image.value = null;
-                      text.clear();
-                    }
+                    await controller.postPost();
                   },
                   icon: const Icon(
                     Icons.share,

@@ -27,7 +27,7 @@ class DatabaseController extends GetxController {
   void onReady() {
     newPosts.bindStream(_firestore.collection('posts').snapshots());
     ever(newPosts, (newVal) {
-      if (newVal.documents.length > posts.length) {
+      if (newVal.documents.length != posts.length) {
         getPosts(update: true);
       }
     });
@@ -67,7 +67,6 @@ class DatabaseController extends GetxController {
           .collection('posts')
           .add(post.toJson())
           .then((doc) => doc.updateData({"id": doc.documentID}));
-      getPosts();
       uploading.toggle();
     } catch (e) {
       uploading.toggle();
@@ -76,18 +75,29 @@ class DatabaseController extends GetxController {
     }
   }
 
-  Future<String> uploadPostImage(PostModel post, File image) async {
+  Future<void> deletePost(String postId) async {
     try {
-      String imageName = '${post.userName}_${post.date}.png';
-      StorageReference reference = _storage.ref().child('posts/$imageName');
-      StorageUploadTask uploadTask = reference.putFile(image);
-      StorageTaskSnapshot snapshot = await uploadTask.onComplete;
-      String imageUrl = await snapshot.ref.getDownloadURL();
-
-      return imageUrl;
+      bool delete = await Get.defaultDialog<bool>(
+          title: 'warning'.tr,
+          content: Text('confirmPostDelete'.tr),
+          actions: [
+            RaisedButton(
+              onPressed: () => Get.back(result: true),
+              child: Text('delete'.tr),
+              color: Colors.red,
+            ),
+            RaisedButton(
+              onPressed: () => Get.back(result: false),
+              child: Text('cancel'.tr),
+            )
+          ]);
+      if (delete) {
+        _firestore.collection('posts').document(postId).delete();
+      }
+      return;
     } catch (e) {
       displayError(e);
-      return null;
+      return;
     }
   }
 
@@ -103,5 +113,20 @@ class DatabaseController extends GetxController {
       posts.add(PostModel.fromJson(doc.data));
     });
     if (!update) loading.toggle();
+  }
+
+  Future<String> uploadPostImage(PostModel post, File image) async {
+    try {
+      String imageName = '${post.userName}_${post.date}.png';
+      StorageReference reference = _storage.ref().child('posts/$imageName');
+      StorageUploadTask uploadTask = reference.putFile(image);
+      StorageTaskSnapshot snapshot = await uploadTask.onComplete;
+      String imageUrl = await snapshot.ref.getDownloadURL();
+
+      return imageUrl;
+    } catch (e) {
+      displayError(e);
+      return null;
+    }
   }
 }
