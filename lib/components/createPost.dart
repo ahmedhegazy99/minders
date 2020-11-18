@@ -3,10 +3,8 @@ import 'dart:io';
 import 'package:Minders/controllers/createpostController.dart';
 import 'package:Minders/controllers/databaseController.dart';
 import 'package:Minders/controllers/userController.dart';
-import 'package:Minders/models/postModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CreatePost extends StatelessWidget {
   final controller = Get.put(CreatepostController());
@@ -42,7 +40,7 @@ class CreatePost extends StatelessWidget {
               const SizedBox(width: 20.0),
               Expanded(
                 child: TextField(
-                  controller: controller.textController.value,
+                  controller: controller.textController,
                   decoration: InputDecoration.collapsed(
                     hintText: 'whatIsInYourMind'.tr,
                   ),

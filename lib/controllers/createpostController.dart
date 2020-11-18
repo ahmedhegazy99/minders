@@ -10,20 +10,15 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreatepostController extends GetxController {
-  Rx<TextEditingController> textController;
-  Rx<File> image;
-
-  @override
-  void onInit() {
-    textController = Rx<TextEditingController>();
-    image = Rx<File>();
-    super.onInit();
-  }
+  final textController = TextEditingController();
+  final image = Rx<File>();
 
   Future<void> selectImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    image.value = File(pickedFile.path);
+    if (pickedFile != null) {
+      image.value = File(pickedFile.path);
+    }
   }
 
   void removeImage() async {
@@ -32,7 +27,7 @@ class CreatepostController extends GetxController {
 
   Future<void> postPost() async {
     UserModel user = Get.find<UserController>().user;
-    if (textController.value.text.isEmpty)
+    if (textController.value?.text?.isEmpty == true)
       Get.snackbar('cantPost'.tr, 'empty'.tr,
           backgroundColor: Colors.red, snackPosition: SnackPosition.BOTTOM);
     else {
@@ -53,7 +48,7 @@ class CreatepostController extends GetxController {
       await Get.find<DatabaseController>().addPost(post, image: image.value);
 
       image.value = null;
-      textController.value.clear();
+      textController.clear();
     }
   }
 }

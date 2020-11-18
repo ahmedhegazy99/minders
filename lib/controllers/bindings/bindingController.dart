@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 class BindingController extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AuthController>(() => AuthController());
-    Get.lazyPut<UserController>(() => UserController());
+    Get.put(AuthController());
+    Get.put(UserController());
     Get.lazyPut<DatabaseController>(() => DatabaseController());
   }
 }
