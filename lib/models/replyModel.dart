@@ -13,9 +13,16 @@ class ReplyModel {
   String content;
   @JsonKey(fromJson: dateTimeFromTimestamp, toJson: dateTimeToTimestamp)
   DateTime date;
+  String postId;
 
   ReplyModel(
-      {this.id, this.content, this.userId, this.userImage, this.userName});
+      {this.id,
+      this.content,
+      this.userId,
+      this.userImage,
+      this.userName,
+      this.date,
+      this.postId});
 
   ReplyModel copy() => ReplyModel.fromJson(this.toJson());
   factory ReplyModel.fromJson(Map<String, dynamic> json) =>

@@ -1,12 +1,7 @@
-import 'package:Minders/authenticate/login.dart';
-import 'package:Minders/authenticate/signup.dart';
 import 'package:Minders/controllers/bindings/bindingController.dart';
-import 'package:Minders/screens/home.dart';
-import 'package:Minders/screens/splash.dart';
-import 'package:Minders/screens/uploadPost.dart';
+import 'package:Minders/utils/appRouter.dart';
 import 'package:Minders/utils/locales.dart';
 import 'package:flutter/material.dart';
-import 'package:Minders/mainBar.dart';
 import 'package:get/get.dart';
 
 void main() => runApp(MyApp());
@@ -18,15 +13,8 @@ class MyApp extends StatelessWidget {
       translations: Locales(),
       locale: Locale('en'),
       initialBinding: BindingController(),
-      home: Splash(),
-      routes: {
-        '/splash': (context) => Splash(),
-        '/home': (context) => Home(),
-        '/login': (context) => Login(),
-        '/signup': (context) => Signup(),
-        '/mainBar': (context) => MainBar(),
-        '/uploadPage': (context) => UploadPost(),
-      },
+      onGenerateRoute: AppRouter.generateGlobalRoutes,
+      initialRoute: AppRouter.splashRoute,
     );
   }
 }

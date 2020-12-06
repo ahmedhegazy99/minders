@@ -1,21 +1,17 @@
 import 'package:Minders/components/createPost.dart';
-import 'package:Minders/controllers/databaseController.dart';
+import 'package:Minders/controllers/postController.dart';
 import 'package:flutter/material.dart';
-import 'package:Minders/screens/postCard.dart';
+import 'package:Minders/components/postCard.dart';
 import 'package:get/get.dart';
 
-class Home extends GetWidget<DatabaseController> {
+class Home extends GetWidget<PostController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         color: Colors.grey[200],
         child: Obx(() {
-          if (controller.loading.value)
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          if (controller.posts.isEmpty)
+          if (controller.posts?.isEmpty == true || controller.posts == null)
             return Column(
               children: [
                 CreatePost(),
@@ -25,36 +21,20 @@ class Home extends GetWidget<DatabaseController> {
               ],
             );
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              await Get.find<DatabaseController>().getPosts();
+          return ListView.builder(
+            physics: AlwaysScrollableScrollPhysics(),
+            itemCount: controller.posts.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return CreatePost();
+              }
+              return PostCard(
+                post: controller.posts[index - 1],
+              );
             },
-            child: ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              itemCount: controller.posts.length + 1,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return CreatePost();
-                }
-                return PostCard(
-                  post: controller.posts[index - 1],
-                );
-              },
-            ),
           );
         }),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   tooltip: "Create Post",
-      //   child: Icon(
-      //     Icons.add,
-      //     color: Colors.black,
-      //   ),
-      //   backgroundColor: mindersMainY,
-      //   onPressed: () {
-      //     Get.to(UploadPost());
-      //   },
-      // ),
     );
   }
 }

@@ -16,10 +16,6 @@ PostModel _$PostModelFromJson(Map<String, dynamic> json) {
     userImage: json['userImage'] as String,
     userName: json['userName'] as String,
     id: json['id'] as String,
-    replies: (json['replies'] as List)
-        ?.map((e) =>
-            e == null ? null : ReplyModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
     upvotes: (json['upvotes'] as List)?.map((e) => e as String)?.toList(),
   );
 }
@@ -33,7 +29,6 @@ Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
       'text': instance.text,
       'type': _$PostTypeEnumEnumMap[instance.type],
       'contentUrl': instance.contentUrl,
-      'replies': instance.replies?.map((e) => e?.toJson())?.toList(),
       'upvotes': instance.upvotes,
     };
 

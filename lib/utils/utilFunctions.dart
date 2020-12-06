@@ -11,7 +11,7 @@ Timestamp dateTimeToTimestamp(DateTime dateTime) =>
 void displayError(dynamic e) {
   Get.snackbar(
     "error".tr,
-    e.message,
+    'errorOccured'.tr,
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: Colors.red,
   );

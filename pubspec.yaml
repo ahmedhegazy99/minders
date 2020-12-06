@@ -18,10 +18,10 @@ dependencies:
   flutter_svg: ^0.18.0
   cupertino_icons: ^0.1.2
   get:
-  animated_splash: ^1.0.0
   json_annotation: ^3.1.0
   intl: ^0.16.1
   image_picker: ^0.6.7+14
+  uuid: ^2.2.2
 
 dev_dependencies:
   flutter_test:

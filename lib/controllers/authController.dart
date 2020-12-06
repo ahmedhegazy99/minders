@@ -1,6 +1,7 @@
 import 'package:Minders/controllers/userController.dart';
 import 'package:Minders/models/userModel.dart';
 import 'package:Minders/controllers/databaseController.dart';
+import 'package:Minders/utils/appRouter.dart';
 import 'package:Minders/utils/utilFunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class AuthController extends GetxController {
           mobile: mobile,
           email: email);
       await Get.find<DatabaseController>().createNewUser(_user);
+      Get.offAllNamed(AppRouter.mainBarRoute);
       loading.toggle();
       Get.back();
     } catch (e) {
@@ -56,6 +58,7 @@ class AuthController extends GetxController {
     try {
       loading.toggle();
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Get.offAllNamed(AppRouter.mainBarRoute);
       loading.toggle();
     } catch (e) {
       loading.toggle();
@@ -68,6 +71,7 @@ class AuthController extends GetxController {
       loading.toggle();
       await _auth.signOut();
       Get.find<UserController>().clear();
+      Get.offAllNamed(AppRouter.loginRoute);
       loading.toggle();
     } catch (e) {
       loading.toggle();

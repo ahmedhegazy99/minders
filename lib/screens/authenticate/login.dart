@@ -3,6 +3,7 @@ import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
 import 'package:Minders/controllers/authController.dart';
+import 'package:Minders/utils/appRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,6 +19,7 @@ class Login extends GetWidget<AuthController> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: Container(),
         backgroundColor: Colors.black,
         title: Center(
           child: Image.asset(
@@ -70,7 +72,7 @@ class Login extends GetWidget<AuthController> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/signup');
+                      Get.toNamed(AppRouter.signupRoute);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),

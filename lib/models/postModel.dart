@@ -16,7 +16,6 @@ class PostModel {
   String text;
   PostTypeEnum type;
   String contentUrl;
-  List<ReplyModel> replies;
   List<String> upvotes;
 
   PostModel({
@@ -28,7 +27,6 @@ class PostModel {
     this.userImage,
     this.userName,
     this.id,
-    this.replies,
     this.upvotes,
   });
 

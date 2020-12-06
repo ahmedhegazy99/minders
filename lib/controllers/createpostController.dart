@@ -42,7 +42,6 @@ class CreatepostController extends GetxController {
       post.userImage = user.imageUrl;
       post.userName = '${user.firstName} ${user.lastName}';
       post.date = DateTime.now();
-      post.replies = [];
       post.upvotes = [];
 
       await Get.find<DatabaseController>().addPost(post, image: image.value);

@@ -1,5 +1,6 @@
 import 'package:Minders/components/constants.dart';
 import 'package:Minders/screens/about/strings.dart';
+import 'package:Minders/screens/crew.dart';
 import 'package:flutter/material.dart';
 
 class About extends StatefulWidget {

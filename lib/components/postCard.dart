@@ -1,4 +1,9 @@
 import 'package:Minders/controllers/databaseController.dart';
+import 'package:Minders/controllers/mainBarController.dart';
+import 'package:Minders/controllers/postController.dart';
+import 'package:Minders/controllers/userController.dart';
+import 'package:Minders/models/userModel.dart';
+import 'package:Minders/screens/commentsPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Minders/models/postModel.dart';
@@ -12,8 +17,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
+    final UserModel user = Get.find<UserController>().user;
     return Card(
       margin: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
       shape: RoundedRectangleBorder(
@@ -28,11 +32,16 @@ class PostCard extends StatelessWidget {
               top: 5,
             ),
             child: ListTile(
-              leading: CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.grey[200],
-                backgroundImage: NetworkImage(post.userImage ??
-                    'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'),
+              leading: GestureDetector(
+                onTap: () {
+                  Get.find<MainBarController>().openUserProfile(post.userId);
+                },
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.grey[200],
+                  backgroundImage: NetworkImage(post.userImage ??
+                      'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'),
+                ),
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,26 +63,32 @@ class PostCard extends StatelessWidget {
                 ],
               ),
               subtitle: Text('@${post.userName}'),
-              trailing: PopupMenuButton(
-                onSelected: (val) {
-                  if (val == 'delete') {
-                    Get.find<DatabaseController>().deletePost(post.id);
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: Text('delete'.tr),
-                    value: 'delete',
-                  )
-                ],
-              ),
+              trailing: user.id == post.userId
+                  ? PopupMenuButton(
+                      onSelected: (val) {
+                        if (val == 'delete') {
+                          Get.find<DatabaseController>().deletePost(post.id);
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text('delete'.tr),
+                          value: 'delete',
+                        )
+                      ],
+                    )
+                  : null,
             ),
           ),
           // //post text
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
-            child: Text(post.text),
+            child: Row(
+              children: [
+                Text(post.text),
+              ],
+            ),
           ),
 
           // post image
@@ -89,16 +104,34 @@ class PostCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FlatButton.icon(
-                  icon: Icon(Icons.arrow_upward),
-                  label: Text('upvote'.tr),
+                  icon: Icon(
+                    Icons.arrow_upward,
+                    color: post.upvotes?.contains(user.id) == true
+                        ? Colors.blue
+                        : Colors.grey,
+                  ),
+                  label: Text(
+                    '${'upvote'.tr} (${post.upvotes?.length ?? '0'})',
+                    style: TextStyle(
+                      color: post.upvotes?.contains(user.id) == true
+                          ? Colors.blue
+                          : Colors.grey,
+                    ),
+                  ),
                   textColor: Colors.black38,
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.find<PostController>().toggleIsLiked(post);
+                  },
                 ),
                 FlatButton.icon(
                     icon: Icon(Icons.mode_comment),
                     label: Text('comment'.tr),
                     textColor: Colors.black38,
-                    onPressed: () {}),
+                    onPressed: () {
+                      Get.to(CommentsList(
+                        postId: post.id,
+                      ));
+                    }),
               ],
             ),
           ),

@@ -1,26 +1,23 @@
-import 'package:Minders/authenticate/login.dart';
 import 'package:Minders/controllers/authController.dart';
-import 'package:Minders/mainBar.dart';
-import 'package:Minders/screens/home.dart';
-import 'package:animated_splash/animated_splash.dart';
+import 'package:Minders/utils/appRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Splash extends GetWidget<AuthController> {
+class Splash extends StatelessWidget {
+  void navigate() async {
+    var controller = Get.find<AuthController>();
+    await Future.delayed(Duration(seconds: 3));
+    if (controller.user?.uid != null)
+      Get.offAllNamed(AppRouter.mainBarRoute);
+    else
+      Get.offAllNamed(AppRouter.loginRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplash(
-      imagePath: 'assets/images/Hlogo.png',
-      home: Obx(
-        () {
-          if (controller.user?.uid != null) {
-            return MainBar();
-          } else
-            return Login();
-        },
-      ),
-      duration: 3000,
-      type: AnimatedSplashType.StaticDuration,
-    );
+    navigate();
+    return Center(
+        child: SizedBox(
+            height: 250.0, child: Image.asset("assets/images/Hlogo.png")));
   }
 }
