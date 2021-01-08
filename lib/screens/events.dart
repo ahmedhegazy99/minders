@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-class events extends StatefulWidget {
+class Events extends StatefulWidget {
   @override
-  _eventsState createState() => _eventsState();
+  _EventsState createState() => _EventsState();
 }
 
-class _eventsState extends State<events> {
-
-  Future fetchNotes() async {
-    
-  }
+class _EventsState extends State<Events> {
+  Future fetchNotes() async {}
 
   @override
   Widget build(BuildContext context) {

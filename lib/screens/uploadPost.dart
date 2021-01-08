@@ -2,35 +2,16 @@ import 'package:Minders/components/roundedButton.dart';
 import 'package:Minders/components/roundedInputField.dart';
 import 'package:Minders/components/background.dart';
 import 'package:Minders/components/constants.dart';
-import 'package:Minders/models/user.dart';
-import 'package:Minders/services/auth.dart';
-import 'package:Minders/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Minders/controllers/databaseController.dart';
+import 'package:Minders/controllers/userController.dart';
+import 'package:Minders/models/postModel.dart';
+import 'package:Minders/models/userModel.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class UploadPost extends StatefulWidget {
-
-  final User currentUser;
-
-  UploadPost({this.currentUser});
-
-  @override
-  _UploadPostState createState() => _UploadPostState();
-}
-
-class _UploadPostState extends State<UploadPost>
-    with AutomaticKeepAliveClientMixin<UploadPost> {
-
-  final AuthService _auth = AuthService();
-  final TextEditingController _pass = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+class UploadPost extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-
-  String error = '';
-
-  //text field state
-  String description = "";
+  final TextEditingController description = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +21,13 @@ class _UploadPostState extends State<UploadPost>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        title: Center(child: Image.asset(
-          'assets/images/Hlogo.png',
-          fit: BoxFit.contain,
-          height: 100,
-          width: 100,
-        ),
+        title: Center(
+          child: Image.asset(
+            'assets/images/Hlogo.png',
+            fit: BoxFit.contain,
+            height: 100,
+            width: 100,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
@@ -64,7 +46,11 @@ class _UploadPostState extends State<UploadPost>
               children: <Widget>[
                 Text(
                   "Write Post",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "englishBebas", color: mindersMainY, fontSize: 20),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "englishBebas",
+                      color: mindersMainY,
+                      fontSize: 20),
                 ),
 
                 SizedBox(height: size.height * 0.01),
@@ -73,76 +59,25 @@ class _UploadPostState extends State<UploadPost>
                   validator: (val) => val.isEmpty ? 'write post...' : null,
                   keyboardType: TextInputType.name,
                   hintText: "post",
-                  onChanged: (value) {
-                    description = value;
-                  },
+                  controller: description,
                 ),
 
                 //SizedBox(height: size.height * 0.03),
 
                 RoundedButton(
-                    text: "sign up",
+                    text: "addPost".tr,
                     press: () async {
-                      //Navigator.pushNamed(context, '/mainBar');
-
-                      final userID = _auth.getUserId();
-
-                      //create a new document for new user with uid
-                      await DatabaseService().uploadPosts(ownerId: userID, postText: description, likes: 0);
-
-                      showDialog(context: context,
-                      builder: (BuildContext context) {
-                        return SimpleDialog(
-                          title: new Text("Enter your pin to proceed",
-                            style: TextStyle(color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          backgroundColor: Colors.black,
-                          contentPadding: EdgeInsets.all(20),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(20.0))
-                          ),
-                          children: [
-                            //cancel button
-                            SimpleDialogOption(
-                              child: Text("Cancel",
-                                style: TextStyle(color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      }
-                      );
-
-                      Navigator.of(context).pop();
-
-                      /*
-                      if (_formKey.currentState.validate()) {
-                        print(description);
-
-                        dynamic result = await _auth.emailSignup(
-                            email, password);
-                        if (result == null) {
-                          setState(() {
-                            error = 'please supply a valid email';
-                          });
-                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                            content: Text(error, style: TextStyle(
-                                color: mindersMainY,
-                                fontWeight: FontWeight.bold),),
-                            backgroundColor: Colors.red,
-                          ));
-                        }
-                        else
-                          Navigator.pushNamed(context, '/mainBar');
-                      }*/
-                    }
-                ),
+                      UserModel user = Get.find<UserController>().user;
+                      Get.find<DatabaseController>().addPost(PostModel(
+                        contentUrl: '',
+                        date: DateTime.now(),
+                        text: description.text,
+                        type: PostTypeEnum.photo,
+                        userId: user.id,
+                        userImage: user.imageUrl,
+                        userName: '${user.firstName} ${user.lastName}',
+                      ));
+                    }),
               ],
             ),
           ),
@@ -152,6 +87,5 @@ class _UploadPostState extends State<UploadPost>
   }
 
   @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => throw UnimplementedError();
+  bool get wantKeepAlive => true;
 }
